@@ -7,7 +7,7 @@ import {
   BreadcrumbSeparator,
 } from "@mr/components/ui/Breadcrumb";
 
-export default function DashboardPage() {
+export default function NotificationsPage() {
   return (
     <div className="h-full">
       <Breadcrumb>
@@ -17,7 +17,7 @@ export default function DashboardPage() {
           </BreadcrumbItem>
           <BreadcrumbSeparator />
           <BreadcrumbItem>
-            <BreadcrumbPage>Dashboard</BreadcrumbPage>
+            <BreadcrumbPage>Notifications</BreadcrumbPage>
           </BreadcrumbItem>
         </BreadcrumbList>
       </Breadcrumb>

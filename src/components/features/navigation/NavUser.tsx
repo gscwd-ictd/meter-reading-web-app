@@ -1,7 +1,7 @@
 "use client";
 
+import { type FunctionComponent } from "react";
 import { BadgeCheck, Bell, ChevronsUpDown, CreditCard, LogOut, Sparkles } from "lucide-react";
-
 import { Avatar, AvatarFallback, AvatarImage } from "@mr/components/ui/Avatar";
 import {
   DropdownMenu,
@@ -13,16 +13,13 @@ import {
   DropdownMenuTrigger,
 } from "@mr/components/ui/DropdownMenu";
 import { SidebarMenu, SidebarMenuButton, SidebarMenuItem, useSidebar } from "@mr/components/ui/Sidebar";
+import { NavItemUser } from "./items";
 
-export function NavUser({
-  user,
-}: {
-  user: {
-    name: string;
-    email: string;
-    avatar: string;
-  };
-}) {
+type NavUserProps = {
+  user: NavItemUser;
+};
+
+export const NavUser: FunctionComponent<NavUserProps> = ({ user }) => {
   const { isMobile } = useSidebar();
 
   return (
@@ -95,4 +92,4 @@ export function NavUser({
       </SidebarMenuItem>
     </SidebarMenu>
   );
-}
+};
