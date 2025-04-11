@@ -21,7 +21,7 @@ export const Heading: FunctionComponent<HeadingProps> = ({ variant, children, cl
   if (variant === "h2") {
     return (
       <h2
-        className={cn("scroll-m-20 pb-2 text-3xl font-semibold tracking-tight first:mt-0", className)}
+        className={cn("scroll-m-20 text-3xl font-semibold tracking-tight first:mt-0", className)}
         {...props}
       >
         {children}
