@@ -6,8 +6,10 @@ import { MeterReadingSchedule, useScheduler } from "./useScheduler";
 import { holidays } from "./holidays";
 import { endOfMonth, format, formatDate, startOfMonth } from "date-fns";
 import { Button } from "@mr/components/ui/Button";
-import { CalendarPlus, ChevronLeft, ChevronRight } from "lucide-react";
+import { CalendarPlus, ChevronLeft, ChevronRight, Ellipsis } from "lucide-react";
 import { ButtonGroup } from "@mr/components/ui/ButtonGroup";
+import { StackedAvatars } from "@mr/components/ui/StackedAvatars";
+import { users } from "./users";
 
 export const Scheduler: FunctionComponent = () => {
   const [datesToSplit, setDatesToSplit] = useState<Date[]>([]);
@@ -31,9 +33,9 @@ export const Scheduler: FunctionComponent = () => {
   };
 
   return (
-    <div className="flex h-full flex-col border-y pt-4">
+    <div className="flex h-full flex-col border-y">
       <header className="flex items-center justify-between p-4">
-        <section className="flex items-center gap-5">
+        <section className="flex items-center gap-4">
           <div className="flex size-14 flex-col overflow-clip rounded-lg border">
             <div className="bg-secondary text-secondary-foreground/70 flex flex-1 items-center justify-center border-b text-xs font-semibold tracking-wider uppercase">
               {format(new Date(), "MMM")}
@@ -44,7 +46,7 @@ export const Scheduler: FunctionComponent = () => {
             </div>
           </div>
 
-          <div className="-space-y-1">
+          <div>
             <h1 className="text-lg font-bold">{format(scheduler.currentDate, "MMMM yyyy")}</h1>
 
             <section className="text-muted-foreground flex items-center gap-1 text-sm">
@@ -55,36 +57,49 @@ export const Scheduler: FunctionComponent = () => {
           </div>
         </section>
 
+        <ButtonGroup>
+          <Button
+            variant="outline"
+            onClick={() => {
+              scheduler.goToPreviousMonth();
+              setDatesToSplit([]);
+            }}
+          >
+            <ChevronLeft />
+          </Button>
+          <Button
+            variant="outline"
+            onClick={() => {
+              scheduler.today();
+              setDatesToSplit([]);
+            }}
+          >
+            Today
+          </Button>
+          <Button
+            variant="outline"
+            onClick={() => {
+              scheduler.goToNextMonth();
+              setDatesToSplit([]);
+            }}
+          >
+            <ChevronRight />
+          </Button>
+        </ButtonGroup>
+
         <section className="flex items-center gap-2">
-          <ButtonGroup>
-            <Button
-              variant="outline"
-              onClick={() => {
-                scheduler.goToPreviousMonth();
-                setDatesToSplit([]);
-              }}
-            >
-              <ChevronLeft />
-            </Button>
-            <Button
-              variant="outline"
-              onClick={() => {
-                scheduler.today();
-                setDatesToSplit([]);
-              }}
-            >
-              Today
-            </Button>
-            <Button
-              variant="outline"
-              onClick={() => {
-                scheduler.goToNextMonth();
-                setDatesToSplit([]);
-              }}
-            >
-              <ChevronRight />
-            </Button>
-          </ButtonGroup>
+          <section className="flex items-center gap-4">
+            <StackedAvatars users={users} />
+            <div className="space-x-2">
+              <Button>
+                <CalendarPlus />
+                Add schedule
+              </Button>
+              <Button size="icon" variant="outline">
+                <Ellipsis />
+              </Button>
+            </div>
+          </section>
         </section>
       </header>
 
