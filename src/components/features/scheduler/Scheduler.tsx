@@ -15,7 +15,13 @@ export const Scheduler: FunctionComponent = () => {
   const [datesToSplit, setDatesToSplit] = useState<Date[]>([]);
   const [schedule, setSchedule] = useState<MeterReadingSchedule[]>([]);
 
+  // console.log(schedule);
+
   const scheduler = useScheduler(holidays, []);
+
+  // const sundayReadings = scheduler.addSundayReadings(schedule);
+
+  // console.log(sundayReadings);
 
   useEffect(() => {
     setSchedule(scheduler.calculateSchedule());
@@ -31,6 +37,13 @@ export const Scheduler: FunctionComponent = () => {
     gridTemplateColumns: "repeat(7, minmax(0, 1fr))",
     gridTemplateRows: `repeat(${numberOfWeeks}, minmax(0, 1fr))`,
   };
+
+  // useEffect(() => {
+  //   const newDates = scheduler.splitDates(datesToSplit);
+
+  //   console.log(newDates);
+  //   // eslint-disable-next-line react-hooks/exhaustive-deps
+  // }, [datesToSplit, schedule]);
 
   return (
     <div className="flex h-full flex-col border-y">
@@ -121,6 +134,12 @@ export const Scheduler: FunctionComponent = () => {
 
             return (
               <div
+                // role="button"
+                // onClick={() => {
+                //   const newSplitDates = [...datesToSplit];
+                //   newSplitDates.push(date.readingDate);
+                //   setDatesToSplit(newSplitDates);
+                // }}
                 key={index}
                 className="col-span-1 overflow-hidden border-t border-l p-2 text-sm [&:nth-child(-n+7)]:border-t-0 [&:nth-child(7n+1)]:border-l-0 h-full"
               >
