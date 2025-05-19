@@ -1,17 +1,25 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 "use client";
 
-import { useEffect, useState, type FunctionComponent } from "react";
+import { Fragment, useEffect, useState } from "react";
 import { MeterReadingSchedule, useScheduler } from "./useScheduler";
 import { holidays } from "./holidays";
-import { endOfMonth, format, formatDate, startOfMonth } from "date-fns";
+import { compareAsc, endOfMonth, format, formatDate, getDate, isSameMonth, startOfMonth } from "date-fns";
 import { Button } from "@mr/components/ui/Button";
-import { CalendarPlus, ChevronLeft, ChevronRight, Ellipsis } from "lucide-react";
+import { CalendarPlus, ChevronLeft, ChevronRight, Ellipsis, EllipsisIcon } from "lucide-react";
 import { ButtonGroup } from "@mr/components/ui/ButtonGroup";
 import { StackedAvatars } from "@mr/components/ui/StackedAvatars";
 import { users } from "./users";
+import { Badge } from "@mr/components/ui/Badge";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "@mr/components/ui/DropdownMenu";
+import { toast } from "sonner";
 
-export const Scheduler: FunctionComponent = () => {
+export default function Scheduler() {
   const [datesToSplit, setDatesToSplit] = useState<Date[]>([]);
   const [schedule, setSchedule] = useState<MeterReadingSchedule[]>([]);
 
@@ -40,13 +48,14 @@ export const Scheduler: FunctionComponent = () => {
 
   // useEffect(() => {
   //   const newDates = scheduler.splitDates(datesToSplit);
-
+  //   // setSchedule(newDates);
   //   console.log(newDates);
+
   //   // eslint-disable-next-line react-hooks/exhaustive-deps
   // }, [datesToSplit, schedule]);
 
   return (
-    <div className="flex h-full flex-col border-y">
+    <div className="flex h-full flex-col ">
       <header className="flex items-center justify-between p-4">
         <section className="flex items-center gap-4">
           <div className="flex size-14 flex-col overflow-clip rounded-lg border">
@@ -130,20 +139,157 @@ export const Scheduler: FunctionComponent = () => {
 
         <section className="flex-1" style={gridStyle}>
           {schedule.map((date, index) => {
-            // const isWithinMonth = isSameMonth(date.readingDate, startOfMonth(scheduler.currentDate));
+            const isWithinMonth = isSameMonth(date.readingDate, startOfMonth(scheduler.currentDate));
 
             return (
               <div
-                // role="button"
-                // onClick={() => {
-                //   const newSplitDates = [...datesToSplit];
-                //   newSplitDates.push(date.readingDate);
-                //   setDatesToSplit(newSplitDates);
-                // }}
                 key={index}
-                className="col-span-1 overflow-hidden border-t border-l p-2 text-sm [&:nth-child(-n+7)]:border-t-0 [&:nth-child(7n+1)]:border-l-0 h-full"
+                className="flex flex-col gap-0.5 relative group overflow-hidden border-t border-l p-0.5 text-sm [&:nth-child(-n+7)]:border-t-0 [&:nth-child(7n+1)]:border-l-0 h-full"
               >
-                {formatDate(date.readingDate, "dd")}
+                <div className="flex justify-center items-center pb-5 ">
+                  <div className={`font-bold ${isWithinMonth ? "" : "text-gray-300"}`}>
+                    {formatDate(date.readingDate, "dd")}
+                  </div>
+                </div>
+
+                {/* Dropdown */}
+                <DropdownMenu>
+                  <DropdownMenuTrigger asChild>
+                    <button
+                      className={`border-0 bg-white shadow-none transition-all absolute top-2 right-2 ${
+                        isWithinMonth ? "invisible  group-hover:visible " : "invisible"
+                      }`}
+                    >
+                      <EllipsisIcon className="text-gray-700 size-4" />
+                    </button>
+                  </DropdownMenuTrigger>
+                  <DropdownMenuContent>
+                    <DropdownMenuItem
+                      className="hover:cursor-pointer"
+                      onClick={() => {
+                        if (
+                          getDate(schedule[index].readingDate) > 1 &&
+                          date.dueDate !== undefined &&
+                          date.disconnectionDate !== undefined &&
+                          !Array.isArray(schedule[index - 1].dueDate) &&
+                          !Array.isArray(schedule[index + 1].dueDate)
+                        ) {
+                          const newSplitDates = [...datesToSplit];
+                          newSplitDates.push(date.readingDate);
+                          setDatesToSplit(newSplitDates);
+                          setSchedule(scheduler.splitDates(newSplitDates));
+                        } else if (
+                          getDate(schedule[index].readingDate) === 1 &&
+                          date.dueDate !== undefined &&
+                          date.disconnectionDate !== undefined &&
+                          !Array.isArray(schedule[index + 1].dueDate)
+                        )
+                          toast.error("Error", {
+                            description: "Cannot split dates on the beginning of the month!",
+                            position: "top-right",
+                            duration: 2000,
+                          });
+                        else
+                          toast.error("Error", {
+                            description:
+                              "Cannot split date, multiple same-day reading dates are not allowed!",
+                            position: "top-right",
+                            duration: 2000,
+                          });
+                      }}
+                    >
+                      Split Dates
+                    </DropdownMenuItem>
+                  </DropdownMenuContent>
+                </DropdownMenu>
+
+                {/* DUE */}
+                {Array.isArray(date.dueDate) ? (
+                  <div className=" grid grid-cols-3 items-center">
+                    {(() => {
+                      const days = date.dueDate.sort(compareAsc);
+
+                      return (
+                        <>
+                          <Badge className="rounded-none bg-blue-200 text-blue-500 h-[2rem]  w-full col-span-3 gap-2">
+                            <span className="col-span-2">
+                              {days.map((day, idx) => {
+                                if (idx === 0)
+                                  return (
+                                    <span className="font-bold" key={idx}>
+                                      {formatDate(day, "MMM dd")}
+                                    </span>
+                                  );
+                                else if (idx === 1)
+                                  return (
+                                    <span className="font-bold" key={idx}>
+                                      /{formatDate(day, "dd")}
+                                    </span>
+                                  );
+                              })}
+                            </span>
+                            <Badge className="text-white bg-blue-500 w-[3rem] text-center">Due</Badge>
+                          </Badge>
+                        </>
+                      );
+                    })()}
+                  </div>
+                ) : date.dueDate ? (
+                  <div className=" grid grid-cols-3 items-center">
+                    <Badge className="rounded-none h-[2rem] bg-blue-200 w-full col-span-3 gap-2">
+                      <span className="text-blue-500 font-bold col-span-2">
+                        {scheduler.formatDate(date.dueDate, "MMM dd")}
+                      </span>
+                      <Badge className="text-white w-[3rem] bg-blue-500 text-center">Due</Badge>
+                    </Badge>
+                  </div>
+                ) : null}
+
+                {/* DISCONNECTION */}
+                {Array.isArray(date.disconnectionDate) ? (
+                  <div className=" grid grid-cols-3 items-center">
+                    {(() => {
+                      const days = date.disconnectionDate.sort(compareAsc);
+
+                      return (
+                        <>
+                          <Badge className="rounded-none bg-red-200 text-red-600 h-[2rem]  w-full col-span-3 gap-2">
+                            <span className="col-span-2">
+                              {days.map((day, idx) => {
+                                if (idx === 0)
+                                  return (
+                                    <span className="font-bold" key={idx}>
+                                      {formatDate(day, "MMM dd")}
+                                    </span>
+                                  );
+                                else if (idx === 1)
+                                  return (
+                                    <span className="font-bold" key={idx}>
+                                      /{formatDate(day, "dd")}
+                                    </span>
+                                  );
+                              })}
+                            </span>
+                            <Badge className="text-white bg-red-500 w-[3rem] text-center ">Disc</Badge>
+                          </Badge>
+                        </>
+                      );
+                    })()}
+                  </div>
+                ) : date.dueDate ? (
+                  <div className=" grid grid-cols-3 items-center">
+                    <Badge className="rounded-none h-[2rem] bg-red-200 w-full col-span-3 gap-2">
+                      <span className="text-red-500 font-bold col-span-2">
+                        {scheduler.formatDate(date.disconnectionDate, "MMM dd")}
+                      </span>
+                      <Badge className="text-white bg-red-500 w-[3rem] text-center ">Disc</Badge>
+                    </Badge>
+                  </div>
+                ) : null}
+
+                {/* {date.dueDate === undefined && (
+                  <Badge className="rounded-none bg-gray-300 h-[2rem] items-center w-full ">Rest Day</Badge>
+                )} */}
               </div>
             );
           })}
@@ -151,4 +297,4 @@ export const Scheduler: FunctionComponent = () => {
       </main>
     </div>
   );
-};
+}

@@ -11,6 +11,7 @@ import {
   GalleryVerticalEnd,
   AudioWaveform,
   Command,
+  Users2Icon,
 } from "lucide-react";
 
 export type NavItem = {
@@ -38,6 +39,11 @@ export const mainNav: NavItem[] = [
     title: "Dashboard",
     url: "/dashboard",
     icon: Package,
+  },
+  {
+    title: "Personnel",
+    url: "/personnel",
+    icon: Users2Icon,
   },
   {
     title: "Schedule",

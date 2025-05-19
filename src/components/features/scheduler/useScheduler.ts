@@ -20,6 +20,7 @@ import {
   subMonths,
 } from "date-fns";
 import { useCallback, useEffect, useMemo, useState } from "react";
+import { toast } from "sonner";
 
 type Holiday = {
   id: string;
@@ -57,8 +58,8 @@ export const useScheduler = (holidays: Holiday[], restDays: Date[], date?: Date)
     }
   }, [currentDate, date]);
 
-  // Utility function to have a uniform format for dates
-  const formatDate = (date: Date | undefined, dateFormat?: "yyyy-MM-dd" | "MMM dd") => {
+  // Utility function to have a uniform format for dates  , added dd
+  const formatDate = (date: Date | undefined, dateFormat?: "yyyy-MM-dd" | "MMM dd" | "dd") => {
     if (!date) return undefined;
 
     if (!dateFormat) {
@@ -141,6 +142,10 @@ export const useScheduler = (holidays: Holiday[], restDays: Date[], date?: Date)
     for (let i = 1; i < updatedSchedule.length; i++) {
       const currentReading = updatedSchedule[i]!;
       const previousReading = updatedSchedule[i - 1]!;
+      // const previousReading =
+      //   currentReading.dueDate === updatedSchedule[i - 1].dueDate
+      //     ? updatedSchedule[i - 2]
+      //     : updatedSchedule[i - 1];
 
       // Parse dates
       const currentDate = currentReading.readingDate;
@@ -164,6 +169,10 @@ export const useScheduler = (holidays: Holiday[], restDays: Date[], date?: Date)
     for (let i = 1; i < updatedSchedule.length; i++) {
       const currentReading = updatedSchedule[i]!;
       const previousReading = updatedSchedule[i - 1]!;
+      // const previousReading =
+      //   currentReading.dueDate === updatedSchedule[i - 1].dueDate
+      //     ? updatedSchedule[i - 2]
+      //     : updatedSchedule[i - 1];
 
       // Parse dates
       const currentDate = currentReading.readingDate;
@@ -310,6 +319,8 @@ export const useScheduler = (holidays: Holiday[], restDays: Date[], date?: Date)
           (!readings[idx - lookBack]?.dueDate && !readings[idx - lookBack]?.disconnectionDate) ||
           isSunday(readings[idx - lookBack]?.readingDate as Date)
         ) {
+          //! lookBack is creating a loop due to having no break statement in while when clicked date is the first date of the month
+
           lookBack++;
         }
 
@@ -371,6 +382,11 @@ export const useScheduler = (holidays: Holiday[], restDays: Date[], date?: Date)
         split = [...result];
       }
 
+      toast.success("Success", {
+        description: "Successfully splitted the dates!",
+        position: "top-right",
+        duration: 3000,
+      });
       return split;
     },
     [calculateSchedule, removeDuplicateDates]

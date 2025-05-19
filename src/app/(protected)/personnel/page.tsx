@@ -1,5 +1,3 @@
-// import { Scheduler } from "@mr/components/features/scheduler/Scheduler";
-import SchedulerWrapper from "@mr/components/features/scheduler/SchedulerWrapper";
 import {
   Breadcrumb,
   BreadcrumbItem,
@@ -9,7 +7,7 @@ import {
   BreadcrumbSeparator,
 } from "@mr/components/ui/Breadcrumb";
 
-export default function SchedulePage() {
+export default function MeterReaders() {
   return (
     <div className="h-full grid grid-rows-[auto_1fr] pt-5">
       <div className="px-5 pb-5">
@@ -20,13 +18,11 @@ export default function SchedulePage() {
             </BreadcrumbItem>
             <BreadcrumbSeparator />
             <BreadcrumbItem>
-              <BreadcrumbPage>Schedule</BreadcrumbPage>
+              <BreadcrumbPage>Personnel</BreadcrumbPage>
             </BreadcrumbItem>
           </BreadcrumbList>
         </Breadcrumb>
       </div>
-
-      <SchedulerWrapper />
     </div>
   );
 }
