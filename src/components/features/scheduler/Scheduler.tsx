@@ -156,12 +156,14 @@ export default function Scheduler() {
             return (
               <div
                 key={index}
-                className="flex flex-col gap-0.5 relative group overflow-hidden border-t border-l p-1 text-sm [&:nth-child(-n+7)]:border-t-0 [&:nth-child(7n+1)]:border-l-0 h-full"
+                className="grid grid-rows-4 gap-0.5 relative group overflow-hidden border-t border-l p-1 text-sm [&:nth-child(-n+7)]:border-t-0 [&:nth-child(7n+1)]:border-l-0 h-full"
               >
-                <div className="flex justify-center items-center pb-5 ">
-                  <div className={`font-bold ${isWithinMonth ? "" : "text-gray-300"}`}>
-                    {formatDate(date.readingDate, "dd")}
-                  </div>
+                <div
+                  className={`flex justify-center items-center font-bold ${
+                    isWithinMonth ? "" : "text-gray-300"
+                  } items-center text-center`}
+                >
+                  {formatDate(date.readingDate, "dd")}
                 </div>
 
                 {/* Dropdown */}
@@ -223,7 +225,7 @@ export default function Scheduler() {
 
                       return (
                         <>
-                          <Badge className="rounded-none bg-transparent text-blue-500 h-[2rem]  w-full col-span-3 gap-2">
+                          <Badge className="rounded-none bg-transparent text-blue-500   w-full col-span-3 gap-2">
                             <span className="col-span-2">
                               {days.map((day, idx) => {
                                 if (idx === 0)
@@ -240,7 +242,9 @@ export default function Scheduler() {
                                   );
                               })}
                             </span>
-                            <Badge className="text-white bg-blue-500 w-[3rem] text-center">Due</Badge>
+                            <Badge className="text-white rounded-full bg-blue-500 w-[3rem] text-center">
+                              Due
+                            </Badge>
                           </Badge>
                         </>
                       );
@@ -248,11 +252,11 @@ export default function Scheduler() {
                   </div>
                 ) : date.dueDate ? (
                   <div className=" grid grid-cols-3 items-center">
-                    <Badge className="rounded-none h-[2rem] bg-transparent w-full col-span-3 gap-2">
+                    <Badge className="rounded-none  bg-transparent w-full col-span-3 gap-2">
                       <span className="text-blue-500 font-bold col-span-2">
                         {scheduler.formatDate(date.dueDate, "MMM dd")}
                       </span>
-                      <Badge className="text-white w-[3rem] bg-blue-500 text-center">Due</Badge>
+                      <Badge className="text-white w-[3rem] rounded-full bg-blue-500 text-center">Due</Badge>
                     </Badge>
                   </div>
                 ) : null}
@@ -265,7 +269,7 @@ export default function Scheduler() {
 
                       return (
                         <>
-                          <Badge className="rounded-none bg-transparent text-red-600 h-[2rem]  w-full col-span-3 gap-2">
+                          <Badge className="rounded-none bg-transparent text-red-600   w-full col-span-3 gap-2">
                             <span className="col-span-2">
                               {days.map((day, idx) => {
                                 if (idx === 0)
@@ -282,7 +286,9 @@ export default function Scheduler() {
                                   );
                               })}
                             </span>
-                            <Badge className="text-white bg-red-500 w-[3rem] text-center ">Disc</Badge>
+                            <Badge className="text-white rounded-full bg-red-500 w-[3rem] text-center ">
+                              Disc
+                            </Badge>
                           </Badge>
                         </>
                       );
@@ -290,18 +296,18 @@ export default function Scheduler() {
                   </div>
                 ) : date.dueDate ? (
                   <div className=" grid grid-cols-3 items-center">
-                    <Badge className="rounded-none h-[2rem] bg-transparent w-full col-span-3 gap-2">
+                    <Badge className="rounded-none  bg-transparent w-full col-span-3 gap-2">
                       <span className="text-red-500 font-bold col-span-2">
                         {scheduler.formatDate(date.disconnectionDate, "MMM dd")}
                       </span>
-                      <Badge className="text-white bg-red-500 w-[3rem] text-center ">Disc</Badge>
+                      <Badge className="text-white rounded-full bg-red-500 w-[3rem] text-center ">Disc</Badge>
                     </Badge>
                   </div>
                 ) : null}
 
                 {(dateIsSunday || dateIsSaturday) && isWithinMonth && date.dueDate && (
                   <div className="flex justify-center items-center">
-                    <Badge className="rounded h-[2rem] bg-gray-200 col-span-3 gap-2 text-xs text-gray-500">
+                    <Badge className="rounded-full bg-gray-200 col-span-3 gap-2 text-xs text-gray-500">
                       Applicable rest day
                     </Badge>
                   </div>
