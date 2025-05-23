@@ -51,10 +51,11 @@ export const mainNav: NavItem[] = [
     icon: Calendar,
   },
   {
-    title: "Service Map",
-    url: "/service-map",
+    title: "Zone - Book",
+    url: "/zone-book",
     icon: MapPinned,
   },
+
   {
     title: "Notifications",
     url: "/notifications",

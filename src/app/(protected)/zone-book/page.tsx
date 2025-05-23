@@ -1,4 +1,3 @@
-import { PersonnelTableComponent } from "@mr/components/features/data-tables/personnel/PersonnelTableComponent";
 import {
   Breadcrumb,
   BreadcrumbItem,
@@ -8,7 +7,7 @@ import {
   BreadcrumbSeparator,
 } from "@mr/components/ui/Breadcrumb";
 
-export default function PersonnelPage() {
+export default function ZoneBookpage() {
   return (
     <div className="h-full flex flex-col p-5">
       <div className="">
@@ -25,9 +24,8 @@ export default function PersonnelPage() {
         </Breadcrumb>
       </div>
 
-      <h3 className="font-bold text-xl mt-5">Personnel</h3>
-      <div className="font-medium text-base text-gray-400">List of Meter Readers</div>
-      <PersonnelTableComponent />
+      <h3 className="font-bold text-xl mt-5">Zone & Book</h3>
+      <div className="font-medium text-base text-gray-400">List of Zones & Books</div>
     </div>
   );
 }

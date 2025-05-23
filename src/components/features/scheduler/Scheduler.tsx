@@ -4,7 +4,17 @@
 import { Fragment, useEffect, useState } from "react";
 import { MeterReadingSchedule, useScheduler } from "./useScheduler";
 import { holidays } from "./holidays";
-import { compareAsc, endOfMonth, format, formatDate, getDate, isSameMonth, startOfMonth } from "date-fns";
+import {
+  compareAsc,
+  endOfMonth,
+  format,
+  formatDate,
+  getDate,
+  isSameMonth,
+  isSaturday,
+  isSunday,
+  startOfMonth,
+} from "date-fns";
 import { Button } from "@mr/components/ui/Button";
 import { CalendarPlus, ChevronLeft, ChevronRight, Ellipsis, EllipsisIcon } from "lucide-react";
 import { ButtonGroup } from "@mr/components/ui/ButtonGroup";
@@ -27,7 +37,7 @@ export default function Scheduler() {
 
   const scheduler = useScheduler(holidays, []);
 
-  // const sundayReadings = scheduler.addSundayReadings(schedule);
+  const sundayReadings = scheduler.addSundayReadings(schedule);
 
   // console.log(sundayReadings);
 
@@ -140,11 +150,13 @@ export default function Scheduler() {
         <section className="flex-1" style={gridStyle}>
           {schedule.map((date, index) => {
             const isWithinMonth = isSameMonth(date.readingDate, startOfMonth(scheduler.currentDate));
+            const dateIsSunday = isSunday(date.readingDate);
+            const dateIsSaturday = isSaturday(date.readingDate);
 
             return (
               <div
                 key={index}
-                className="flex flex-col gap-0.5 relative group overflow-hidden border-t border-l p-0.5 text-sm [&:nth-child(-n+7)]:border-t-0 [&:nth-child(7n+1)]:border-l-0 h-full"
+                className="flex flex-col gap-0.5 relative group overflow-hidden border-t border-l p-1 text-sm [&:nth-child(-n+7)]:border-t-0 [&:nth-child(7n+1)]:border-l-0 h-full"
               >
                 <div className="flex justify-center items-center pb-5 ">
                   <div className={`font-bold ${isWithinMonth ? "" : "text-gray-300"}`}>
@@ -157,7 +169,7 @@ export default function Scheduler() {
                   <DropdownMenuTrigger asChild>
                     <button
                       className={`border-0 bg-white shadow-none transition-all absolute top-2 right-2 ${
-                        isWithinMonth ? "invisible  group-hover:visible " : "invisible"
+                        isWithinMonth && !dateIsSunday ? "invisible  group-hover:visible " : "invisible"
                       }`}
                     >
                       <EllipsisIcon className="text-gray-700 size-4" />
@@ -211,7 +223,7 @@ export default function Scheduler() {
 
                       return (
                         <>
-                          <Badge className="rounded-none bg-blue-200 text-blue-500 h-[2rem]  w-full col-span-3 gap-2">
+                          <Badge className="rounded-none bg-transparent text-blue-500 h-[2rem]  w-full col-span-3 gap-2">
                             <span className="col-span-2">
                               {days.map((day, idx) => {
                                 if (idx === 0)
@@ -236,7 +248,7 @@ export default function Scheduler() {
                   </div>
                 ) : date.dueDate ? (
                   <div className=" grid grid-cols-3 items-center">
-                    <Badge className="rounded-none h-[2rem] bg-blue-200 w-full col-span-3 gap-2">
+                    <Badge className="rounded-none h-[2rem] bg-transparent w-full col-span-3 gap-2">
                       <span className="text-blue-500 font-bold col-span-2">
                         {scheduler.formatDate(date.dueDate, "MMM dd")}
                       </span>
@@ -253,7 +265,7 @@ export default function Scheduler() {
 
                       return (
                         <>
-                          <Badge className="rounded-none bg-red-200 text-red-600 h-[2rem]  w-full col-span-3 gap-2">
+                          <Badge className="rounded-none bg-transparent text-red-600 h-[2rem]  w-full col-span-3 gap-2">
                             <span className="col-span-2">
                               {days.map((day, idx) => {
                                 if (idx === 0)
@@ -278,7 +290,7 @@ export default function Scheduler() {
                   </div>
                 ) : date.dueDate ? (
                   <div className=" grid grid-cols-3 items-center">
-                    <Badge className="rounded-none h-[2rem] bg-red-200 w-full col-span-3 gap-2">
+                    <Badge className="rounded-none h-[2rem] bg-transparent w-full col-span-3 gap-2">
                       <span className="text-red-500 font-bold col-span-2">
                         {scheduler.formatDate(date.disconnectionDate, "MMM dd")}
                       </span>
@@ -287,9 +299,13 @@ export default function Scheduler() {
                   </div>
                 ) : null}
 
-                {/* {date.dueDate === undefined && (
-                  <Badge className="rounded-none bg-gray-300 h-[2rem] items-center w-full ">Rest Day</Badge>
-                )} */}
+                {(dateIsSunday || dateIsSaturday) && isWithinMonth && date.dueDate && (
+                  <div className="flex justify-center items-center">
+                    <Badge className="rounded h-[2rem] bg-gray-200 col-span-3 gap-2 text-xs text-gray-500">
+                      Applicable rest day
+                    </Badge>
+                  </div>
+                )}
               </div>
             );
           })}
