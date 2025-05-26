@@ -12,6 +12,7 @@ import {
   AudioWaveform,
   Command,
   Users2Icon,
+  MessageCircleWarning,
 } from "lucide-react";
 
 export type NavItem = {
@@ -55,7 +56,11 @@ export const mainNav: NavItem[] = [
     url: "/zone-book",
     icon: MapPinned,
   },
-
+  {
+    title: "Text Blast",
+    url: "/text-blast",
+    icon: MessageCircleWarning,
+  },
   {
     title: "Notifications",
     url: "/notifications",
