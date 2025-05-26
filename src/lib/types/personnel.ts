@@ -1,4 +1,4 @@
-import { Area } from "./area";
+import { MeterReadingSchedule } from "@mr/components/features/scheduler/useScheduler";
 
 export type Employee = {
   fullName: string;
@@ -8,4 +8,8 @@ export type Employee = {
   isMeterReader?: boolean;
 };
 
-export type MeterReader = Employee & { zoneBooks: Area[] };
+export type MeterReader = Employee & { restDay: "sunday" | "saturday" | undefined };
+
+export type MeterReaderWithSchedules = {
+  meterReadingSchedule: Array<MeterReadingSchedule>;
+};

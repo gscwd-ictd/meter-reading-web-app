@@ -16,7 +16,7 @@ export const metadata: Metadata = {
 export default function RootLayout({ children }: Readonly<PropsWithChildren>) {
   return (
     <html lang="en" suppressHydrationWarning>
-      <body className={`${geistSans.className}  antialiased`}>
+      <body className={`${geistSans.className} antialiased`}>
         <Toaster richColors />
         <main className="h-screen overflow-x-hidden">{children}</main>
       </body>

@@ -46,22 +46,11 @@ const employeesDump: Employee[] = [
 
 export const PersonnelDataTable: FunctionComponent = () => {
   const meterReaders = usePersonnelStore((state) => state.meterReaders);
-  const employees = usePersonnelStore((state) => state.employees);
-  const setMeterReaders = usePersonnelStore((state) => state.setMeterReaders);
   const setEmployees = usePersonnelStore((state) => state.setEmployees);
 
   useEffect(() => {
     setEmployees(employeesDump); //! REMOVE THIS!!!
   }, []);
-
-  useEffect(() => {
-    const currentMeterReaders = employees.filter((employee) => employee.isMeterReader === true);
-    setMeterReaders(
-      currentMeterReaders.map((meterReader) => {
-        return { ...meterReader, zoneBooks: [] };
-      })
-    );
-  }, [employees, setMeterReaders]);
 
   const personnelColumns = usePersonnelColumns(meterReaders);
 

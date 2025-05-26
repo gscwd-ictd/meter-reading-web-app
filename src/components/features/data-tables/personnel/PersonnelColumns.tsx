@@ -38,6 +38,23 @@ export const usePersonnelColumns = (data: PersonnelColumn[] | undefined) => {
           exportLabel: "Designation",
         },
       },
+      {
+        accessorKey: "restDay",
+        header: ({ column }) => <DataTableColumnHeader column={column} title="Rest Day" />,
+        cell: ({ row }) => (
+          <span>
+            {row.original.restDay === "sunday"
+              ? "Sunday"
+              : row.original.restDay === "saturday"
+              ? "Saturday"
+              : null}
+          </span>
+        ),
+        filterFn: filterFn,
+        meta: {
+          exportLabel: "Rest day",
+        },
+      },
 
       {
         accessorKey: "contactNumber",

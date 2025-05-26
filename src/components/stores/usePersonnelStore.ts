@@ -9,6 +9,9 @@ type PersonnelStore = {
   selectedMeterReader: MeterReader | undefined;
   setSelectedMeterReader: (selectedMeterReader: MeterReader | undefined) => void;
 
+  selectedRestDay: "sunday" | "saturday" | undefined;
+  setSelectedRestDay: (selectedRestDay: "sunday" | "saturday" | undefined) => void;
+
   employees: Employee[];
   setEmployees: (employees: Employee[]) => void;
 
@@ -42,6 +45,9 @@ export const usePersonnelStore = create<PersonnelStore>((set) => ({
 
   selectedEmployee: undefined,
   setSelectedEmployee: (selectedEmployee) => set({ selectedEmployee }),
+
+  selectedRestDay: undefined,
+  setSelectedRestDay: (selectedRestDay: "sunday" | "saturday" | undefined) => set({ selectedRestDay }),
 
   queryPersonnel: "",
   setQueryPersonnel: (queryPersonnel) => set({ queryPersonnel }),

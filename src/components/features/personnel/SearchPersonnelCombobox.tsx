@@ -28,19 +28,27 @@ export const SearchPersonnelCombobox: FunctionComponent = () => {
   }, [employees]);
 
   const setSelectedEmployee = usePersonnelStore((state) => state.setSelectedEmployee);
+  const selectedEmployee = usePersonnelStore((state) => state.selectedEmployee);
+  const setSelectedRestDay = usePersonnelStore((state) => state.setSelectedRestDay);
 
   return (
     <Popover open={open} onOpenChange={setOpen}>
       <PopoverTrigger asChild>
-        <Button variant="outline" role="combobox" aria-expanded={open} className="w-full justify-between">
+        <Button
+          variant="outline"
+          role="combobox"
+          aria-expanded={open}
+          className={`w-full justify-between h-[3rem]`}
+        >
           {value ? (
-            <span className="flex gap-2 items-center">
-              <User2Icon className="size-4" />
+            <span className="flex gap-2 items-center text-base">
+              <User2Icon className="size-6 text-primary" />
               {currentEmployees?.find((employee) => employee.fullName === value)?.fullName}
             </span>
           ) : (
-            <span className="flex items-center gap-2">
-              <MagnifyingGlassIcon /> Select Employee...
+            <span className="flex items-center gap-2 text-base">
+              <MagnifyingGlassIcon className="size-6 text-primary" />
+              <span className="text-base">Select Employee...</span>
             </span>
           )}
         </Button>
@@ -57,16 +65,20 @@ export const SearchPersonnelCombobox: FunctionComponent = () => {
                     key={employee.idNo}
                     value={employee.fullName}
                     onSelect={(currentValue) => {
+                      if (employee.idNo === selectedEmployee?.idNo) {
+                        setSelectedEmployee(undefined);
+                      } else if (employee.idNo !== selectedEmployee?.idNo) setSelectedEmployee(employee);
+
+                      setSelectedRestDay(undefined);
                       setValue(currentValue === value ? "" : currentValue);
                       setOpen(false);
-                      setSelectedEmployee(employee);
                     }}
                   >
-                    <div className="flex items-center gap-2">
+                    <div className="flex items-center gap-2 text-base">
                       <CircleUserRoundIcon className="size-7" />
                       <div className="flex flex-col">
                         <span className="font-semibold">{employee.fullName}</span>
-                        <span className="text-xs  text-gray-500">{employee.designation}</span>
+                        <span className="text-sm  text-gray-500">{employee.designation}</span>
                       </div>
                     </div>
                     <Check

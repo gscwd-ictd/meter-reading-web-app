@@ -7,7 +7,7 @@ const Scheduler = dynamic(() => import("@mr/components/features/scheduler/Schedu
 
 export default function SchedulerWrapper() {
   return (
-    <div className="m-10 border rounded">
+    <div className="m-5 border rounded">
       <Scheduler />
     </div>
   );
