@@ -11,10 +11,10 @@ import { MoreHorizontal, MoreVertical } from "lucide-react";
 import { FunctionComponent } from "react";
 
 type PersonnelRowActionsProps = {
-  idNo: string;
+  companyId: string;
 };
 
-export const PersonnelRowActions: FunctionComponent<PersonnelRowActionsProps> = ({ idNo }) => {
+export const PersonnelRowActions: FunctionComponent<PersonnelRowActionsProps> = ({ companyId }) => {
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
@@ -29,7 +29,7 @@ export const PersonnelRowActions: FunctionComponent<PersonnelRowActionsProps> = 
         </Button>
       </DropdownMenuTrigger>
       <DropdownMenuContent align="end" className="w-[160px]">
-        <DropdownMenuItem onClick={() => console.log(idNo)} className="cursor-pointer">
+        <DropdownMenuItem onClick={() => console.log(companyId)} className="cursor-pointer">
           Update personnel
         </DropdownMenuItem>
       </DropdownMenuContent>

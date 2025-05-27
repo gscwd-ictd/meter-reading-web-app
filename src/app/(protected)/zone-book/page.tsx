@@ -1,3 +1,4 @@
+import { ZonebookTableComponent } from "@mr/components/features/data-tables/zone-book/ZonebookTableComponent";
 import {
   Breadcrumb,
   BreadcrumbItem,
@@ -26,6 +27,7 @@ export default function ZoneBookpage() {
 
       <h3 className="font-bold text-xl mt-5">Zone & Book</h3>
       <div className="font-medium text-base text-gray-400">List of Zones & Books</div>
+      <ZonebookTableComponent />
     </div>
   );
 }

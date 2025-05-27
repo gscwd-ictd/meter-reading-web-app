@@ -21,12 +21,16 @@ export const SelectRestDayCombobox: FunctionComponent = () => {
 
   return (
     <div className=" w-full items-center gap-1">
-      <Label id="select-rest-day" className="text-sm">
+      <Label id="select-rest-day" className="text-sm font-medium text-gray-700">
         Rest Day
       </Label>
       <Popover open={open} onOpenChange={setOpen}>
         <PopoverTrigger asChild>
-          <Button variant="outline" role="combobox" className="w-full justify-between">
+          <Button
+            role="combobox"
+            variant="secondary"
+            className="w-full justify-between bg-green-500 text-white hover:bg-green-600 hover:brightness-95"
+          >
             {selectedRestDay ? (
               <div className="flex justify-between items-center gap-2">
                 {restDays.find((restDay) => restDay.value === selectedRestDay)?.label}

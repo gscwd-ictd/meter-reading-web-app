@@ -13,54 +13,58 @@ export const PersonnelTabs = () => {
       {/* Info */}
       <TabsContent value="info">
         <div className="grid gap-4 py-4">
-          <div className="flex flex-col items-start gap-0">
-            <Label htmlFor="idno" className="text-left text-sm font-medium">
-              ID No
-            </Label>
-            <Input
-              id="idno"
-              className="col-span-3 "
-              disabled
-              defaultValue={selectedEmployee !== undefined ? selectedEmployee.idNo : ""}
-            />
+          <div className="grid grid-cols-5 gap-2">
+            <div className="flex flex-col items-start gap-0 col-span-3">
+              <Label htmlFor="name" className="text-left text-sm font-medium text-gray-700">
+                Name
+              </Label>
+              <Input
+                id="name"
+                className="col-span-3 "
+                disabled
+                defaultValue={selectedEmployee !== undefined ? selectedEmployee.name : ""}
+              />
+            </div>
+
+            <div className="flex flex-col items-start gap-0 col-span-2">
+              <Label htmlFor="companyId" className="text-left text-sm font-medium text-gray-700">
+                ID No
+              </Label>
+              <Input
+                id="companyId"
+                className="col-span-3 "
+                disabled
+                defaultValue={selectedEmployee !== undefined ? selectedEmployee.companyId : ""}
+              />
+            </div>
           </div>
 
           <div className="flex flex-col items-start gap-0">
-            <Label htmlFor="fullname" className="text-left text-sm font-medium">
-              Name
+            <Label htmlFor="positionTitle" className="text-left text-sm font-medium text-gray-700">
+              Position Title
             </Label>
             <Input
-              id="fullname"
+              id="positionTitle"
               className="col-span-3 "
               disabled
-              defaultValue={selectedEmployee !== undefined ? selectedEmployee.fullName : ""}
+              defaultValue={selectedEmployee !== undefined ? selectedEmployee.positionTitle : ""}
             />
           </div>
+          <div className="grid grid-cols-2 gap-2">
+            <div className="flex flex-col items-start gap-0">
+              <Label htmlFor="mobileNumber" className="text-left text-sm font-medium text-gray-700">
+                Contact Number
+              </Label>
+              <Input
+                id="mobileNumber"
+                className="col-span-3 "
+                disabled
+                defaultValue={selectedEmployee !== undefined ? selectedEmployee.mobileNumber : ""}
+              />
+            </div>
 
-          <div className="flex flex-col items-start gap-0">
-            <Label htmlFor="designation" className="text-left text-sm font-medium">
-              Designation
-            </Label>
-            <Input
-              id="designation"
-              className="col-span-3 "
-              disabled
-              defaultValue={selectedEmployee !== undefined ? selectedEmployee.designation : ""}
-            />
+            <SelectRestDayCombobox />
           </div>
-          <div className="flex flex-col items-start gap-0">
-            <Label htmlFor="contactnumber" className="text-left text-sm font-medium">
-              Contact Number
-            </Label>
-            <Input
-              id="contactnumber"
-              className="col-span-3 "
-              disabled
-              defaultValue={selectedEmployee !== undefined ? selectedEmployee.contactNumber : ""}
-            />
-          </div>
-
-          <SelectRestDayCombobox />
         </div>
       </TabsContent>
     </Tabs>

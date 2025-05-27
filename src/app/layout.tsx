@@ -3,6 +3,7 @@ import { type Metadata } from "next";
 import { Geist } from "next/font/google";
 import "./globals.css";
 import { Toaster } from "@mr/components/ui/Sonner";
+import { QueryClientProvider } from "@mr/components/providers/QueryClientProvider";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -17,8 +18,10 @@ export default function RootLayout({ children }: Readonly<PropsWithChildren>) {
   return (
     <html lang="en" suppressHydrationWarning>
       <body className={`${geistSans.className} antialiased`}>
-        <Toaster richColors />
-        <main className="h-screen overflow-x-hidden">{children}</main>
+        <QueryClientProvider>
+          <Toaster richColors />
+          <main className="h-screen overflow-x-hidden">{children}</main>
+        </QueryClientProvider>
       </body>
     </html>
   );

@@ -1,5 +1,6 @@
 "use client";
 
+import { MeterReadingSchedule } from "@mr/lib/types/schedule";
 import {
   addDays,
   addMonths,
@@ -40,23 +41,18 @@ type DisconnectionDate = {
   disconnectionDate: Date;
 };
 
-export type MeterReadingSchedule = {
-  readingDate: Date;
-  dueDate: Date | Date[] | undefined;
-  disconnectionDate: Date | Date[] | undefined;
-};
-
 export type Scheduler = ReturnType<typeof useScheduler>;
 
 export const useScheduler = (holidays: Holiday[], restDays: Date[], date?: Date) => {
   const [currentDate, setCurrentDate] = useState(date ?? new Date());
-  // const [currentRestDays, setCurrentRestDays] = useState(restDays);
+  const [currentMonthYear, setCurrentMonthYear] = useState(format(currentDate, "MM/yyyy"));
 
   useEffect(() => {
     if (date !== undefined && date.getTime() !== currentDate.getTime()) {
       setCurrentDate(date);
+      setCurrentMonthYear(format(currentDate, "MM/yyyy"));
     }
-  }, [currentDate, date]);
+  }, [currentDate, date, currentMonthYear]);
 
   // Utility function to have a uniform format for dates  , added dd
   const formatDate = (date: Date | undefined, dateFormat?: "yyyy-MM-dd" | "MMM dd" | "dd") => {
@@ -394,14 +390,17 @@ export const useScheduler = (holidays: Holiday[], restDays: Date[], date?: Date)
 
   const goToPreviousMonth = () => {
     setCurrentDate(subMonths(currentDate, 1));
+    setCurrentMonthYear(format(subMonths(currentDate, 1), "MM/yyyy"));
   };
 
   const goToNextMonth = () => {
     setCurrentDate(addMonths(currentDate, 1));
+    setCurrentMonthYear(format(addMonths(currentDate, 1), "MM/yyyy"));
   };
 
   const today = () => {
     setCurrentDate(new Date());
+    setCurrentMonthYear(format(new Date(), "MM/yyyy"));
   };
 
   return {
@@ -414,5 +413,6 @@ export const useScheduler = (holidays: Holiday[], restDays: Date[], date?: Date)
     goToNextMonth,
     today,
     currentDate,
+    currentMonthYear,
   };
 };

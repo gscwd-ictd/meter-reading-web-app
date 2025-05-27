@@ -1,40 +1,45 @@
 import { MeterReader } from "@mr/lib/types/personnel";
-import { MeterReadingSchedule } from "./useScheduler";
-import { useCallback, useMemo } from "react";
-import { format } from "date-fns";
+import { useCallback } from "react";
+import { getDay, isValid } from "date-fns";
+import { MeterReadingSchedule } from "@mr/lib/types/schedule";
 
 export type ScheduleMeterReaders = ReturnType<typeof useScheduleMeterReaders>;
 
-export const useScheduleMeterReaders = (schedule: MeterReadingSchedule[], meterReaders?: MeterReader[]) => {
-  // Utility function to have a uniform format for dates  , added dd
-  const formatDate = (date: Date | undefined, dateFormat?: "yyyy-MM-dd" | "MMM dd" | "dd") => {
-    if (!date) return undefined;
-
-    if (!dateFormat) {
-      dateFormat = "yyyy-MM-dd";
-    }
-
-    return format(date, dateFormat);
-  };
-
+export const useScheduleMeterReaders = (schedules: MeterReadingSchedule[], meterReaders: MeterReader[]) => {
   const allReadingDates = useCallback((): Date[] => {
     const schedDates: Date[] = [];
 
-    schedule.filter((sched) => {
+    schedules.filter((sched) => {
       if (sched.readingDate !== undefined) return schedDates.push(sched.readingDate);
     });
 
     return schedDates;
-  }, [schedule]);
+  }, [schedules]);
 
-  //   schedule.filter((sched) => sched.readingDate !== undefined);
+  // get map day number to restDay type
+  const getDayName = (date: Date): "sunday" | "saturday" | undefined => {
+    const day = getDay(date); // 0 = Sunday, 6 = Saturday
+    if (day === 0) return "sunday";
+    if (day === 6) return "saturday";
+    return undefined;
+  };
 
-  // const getRestDayDates = useMemo(()=>meterReaders.map((meterReader)=>{
+  const assignReadersToSchedules = useCallback(() => {
+    return schedules.map((schedule) => {
+      // Guard: If readingDate is missing or invalid, skip assigning readers
+      if (!Array.isArray(schedule.dueDate) && (!schedule.dueDate || !isValid(schedule.dueDate))) {
+        return { ...schedule }; // no meterReaders field
+      }
 
-  // // function getSundayRestDays(dates:Date[])
+      const readingRestDay = getDayName(schedule.readingDate);
 
-  //     return {restDays: []}
-  // }),[meterReaders])
+      const availableReaders = meterReaders
+        .filter((reader) => reader.restDay !== readingRestDay)
+        .map((reader) => ({ ...reader })); //! Improve this
 
-  return { allReadingDates };
+      return { ...schedule, meterReaders: availableReaders };
+    });
+  }, [meterReaders, schedules]);
+
+  return { allReadingDates, assignReadersToSchedules };
 };

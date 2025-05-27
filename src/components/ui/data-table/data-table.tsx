@@ -107,7 +107,7 @@ export function DataTable<T>({
       </ColumnVisibilityToggleContext.Provider>
 
       <div>
-        <div className="rounded-md border">
+        <div className="rounded-md border px-2">
           <Table>
             <TableHeader>
               {table.getHeaderGroups().map((headerGroup) => (

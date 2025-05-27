@@ -1,15 +1,18 @@
-import { MeterReadingSchedule } from "@mr/components/features/scheduler/useScheduler";
+import { MeterReadingSchedule } from "./schedule";
+import { Zonebook } from "./zonebook";
 
 export type Employee = {
-  fullName: string;
-  idNo: string;
-  contactNumber: string;
-  designation: string;
+  name: string;
+  employeeId: string;
+  companyId: string;
+  mobileNumber: string;
+  positionTitle: string;
+  photoUrl: string;
   isMeterReader?: boolean;
 };
 
-export type MeterReader = Employee & { restDay: "sunday" | "saturday" | undefined };
+export type MeterReader = Employee & { restDay: "sunday" | "saturday" | undefined; zonebooks: Zonebook[] };
 
-export type MeterReaderWithSchedules = {
-  meterReadingSchedule: Array<MeterReadingSchedule>;
-};
+export type ScheduleWithReaders = Array<
+  MeterReadingSchedule & { meterReaders: Array<{ companyId: string }> }
+>;

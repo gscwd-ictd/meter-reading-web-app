@@ -14,7 +14,7 @@ type StackedAvatarsProps = {
   size?: "sm" | "md" | "lg";
 };
 
-export const StackedAvatars: FunctionComponent<StackedAvatarsProps> = ({ users, limit = 4, size = "md" }) => {
+export const StackedAvatars: FunctionComponent<StackedAvatarsProps> = ({ users, limit = 3, size = "sm" }) => {
   const visibleUsers = users.slice(0, limit);
   const remaining = users.length - limit;
 

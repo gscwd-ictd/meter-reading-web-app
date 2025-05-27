@@ -36,16 +36,21 @@ export const AddPersonnelDialog: FunctionComponent = () => {
       const newMeterReaders = [...meterReaders];
       newMeterReaders?.push({
         ...selectedEmployee,
-        fullName: selectedEmployee?.fullName!,
-        contactNumber: selectedEmployee?.contactNumber!,
-        designation: selectedEmployee?.designation!,
-        idNo: selectedEmployee?.idNo!,
+        name: selectedEmployee?.name!,
+        mobileNumber: selectedEmployee?.mobileNumber!,
+        positionTitle: selectedEmployee?.positionTitle!,
+        companyId: selectedEmployee?.companyId!,
+        employeeId: selectedEmployee?.employeeId!,
+        photoUrl: selectedEmployee?.photoUrl!,
         isMeterReader: true,
         restDay: selectedRestDay,
+        zonebooks: [],
       });
 
       const newEmployees = [...employees];
-      const employeeToChange = newEmployees.find((employee) => employee.idNo === selectedEmployee?.idNo);
+      const employeeToChange = newEmployees.find(
+        (employee) => employee.companyId === selectedEmployee?.companyId
+      );
       if (employeeToChange) {
         employeeToChange.isMeterReader = true;
       }
@@ -64,7 +69,7 @@ export const AddPersonnelDialog: FunctionComponent = () => {
 
   // set the selected employee to undefined when the modal is closed
   useEffect(() => {
-    if (addPersonnelDialogIsOpen) setSelectedEmployee({} as Employee);
+    if (addPersonnelDialogIsOpen) setSelectedEmployee(undefined);
   }, [addPersonnelDialogIsOpen]);
 
   return (
@@ -75,12 +80,12 @@ export const AddPersonnelDialog: FunctionComponent = () => {
           Add personnel
         </Button>
       </DialogTrigger>
-      <DialogContent className="">
-        <DialogHeader className="flex flex-col gap-0 px-2">
+      <DialogContent className="max-w-2xl w-[42rem]">
+        <DialogHeader className="flex flex-col gap-0 ">
           <DialogTitle className="text-xl font-bold text-gray-700">Personnel</DialogTitle>
           <DialogDescription className="text-gray-500">Add new meter reader</DialogDescription>
         </DialogHeader>
-        <div className="px-2 py-5">
+        <div className="">
           <SearchPersonnelCombobox />
           <PersonnelTabs />
         </div>
@@ -95,6 +100,7 @@ export const AddPersonnelDialog: FunctionComponent = () => {
           >
             Cancel
           </Button>
+
           <Button onClick={submitPersonnel}>Add</Button>
         </DialogFooter>
       </DialogContent>

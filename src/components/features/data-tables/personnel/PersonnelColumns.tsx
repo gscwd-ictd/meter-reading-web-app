@@ -17,25 +17,25 @@ export const usePersonnelColumns = (data: PersonnelColumn[] | undefined) => {
   useEffect(() => {
     const cols: ColumnDef<PersonnelColumn>[] = [
       {
-        accessorKey: "idNo",
+        accessorKey: "companyId",
         header: ({ column }) => <DataTableColumnHeader column={column} title="ID No." />,
         filterFn: filterFn,
-        cell: ({ row }) => <span>{row.original.idNo}</span>,
+        cell: ({ row }) => <span>{row.original.companyId}</span>,
         enableColumnFilter: false,
       },
       {
-        accessorKey: "fullName",
+        accessorKey: "name",
         header: ({ column }) => <DataTableColumnHeader column={column} title="Name" />,
-        cell: ({ row }) => <span>{row.original.fullName}</span>,
+        cell: ({ row }) => <span>{row.original.name}</span>,
         enableColumnFilter: false,
       },
       {
-        accessorKey: "designation",
-        header: ({ column }) => <DataTableColumnHeader column={column} title="Designation" />,
+        accessorKey: "positionTitle",
+        header: ({ column }) => <DataTableColumnHeader column={column} title="Position Title" />,
         filterFn: filterFn,
-        cell: ({ row }) => <span>{row.original.designation}</span>,
+        cell: ({ row }) => <span>{row.original.positionTitle}</span>,
         meta: {
-          exportLabel: "Designation",
+          exportLabel: "Position Title",
         },
       },
       {
@@ -57,15 +57,15 @@ export const usePersonnelColumns = (data: PersonnelColumn[] | undefined) => {
       },
 
       {
-        accessorKey: "contactNumber",
+        accessorKey: "mobileNumber",
         header: ({ column }) => <DataTableColumnHeader column={column} title="Contact No." />,
-        cell: ({ row }) => <span>{row.original.contactNumber}</span>,
+        cell: ({ row }) => <span>{row.original.mobileNumber}</span>,
         enableColumnFilter: false,
       },
       {
         id: "actions",
         header: "Actions",
-        cell: ({ row }) => <PersonnelRowActions idNo={row.original.idNo} />,
+        cell: ({ row }) => <PersonnelRowActions companyId={row.original.companyId} />,
       },
     ];
 
