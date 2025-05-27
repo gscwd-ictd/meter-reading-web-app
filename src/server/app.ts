@@ -9,7 +9,7 @@ function createApp() {
   app.use(
     cors({
       origin: [env.APP_HOST],
-      allowMethods: ["POST", "GET", "OPTIONS"],
+      allowMethods: ["POST", "GET", "PUT", "PATCH", "DELETE", "OPTIONS"],
       maxAge: 600,
       credentials: true,
     }),
