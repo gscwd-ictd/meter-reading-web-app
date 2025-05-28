@@ -14,11 +14,12 @@ import { Popover, PopoverContent, PopoverTrigger } from "@mr/components/ui/Popov
 import { cn } from "@mr/lib/utils";
 import { MagnifyingGlassIcon } from "@radix-ui/react-icons";
 import { useQuery } from "@tanstack/react-query";
-import { Check, CircleUserRoundIcon, User2Icon } from "lucide-react";
+import { Check, User2Icon } from "lucide-react";
 import { FunctionComponent, useEffect, useState } from "react";
 import axios from "axios";
 import { Employee } from "@mr/lib/types/personnel";
 import { useDebounce } from "@mr/hooks/useDebounce";
+import { Avatar, AvatarFallback, AvatarImage } from "@mr/components/ui/Avatar";
 
 export const SearchPersonnelCombobox: FunctionComponent = () => {
   const [open, setOpen] = useState<boolean>(false);
@@ -92,8 +93,19 @@ export const SearchPersonnelCombobox: FunctionComponent = () => {
                   }}
                   className={cn("px-2 py-2", index !== 0 && "border-t border-muted")}
                 >
-                  <div className="flex items-center gap-2 text-base">
-                    <CircleUserRoundIcon className="size-7" />
+                  <div className="flex items-center gap-2">
+                    <Avatar className={`ring-background cursor-pointer ring-2`}>
+                      <AvatarImage
+                        src={
+                          employee.photoUrl
+                            ? `${process.env.NEXT_PUBLIC_HRMS_IMAGES_SERVER}/${employee.photoUrl}`
+                            : undefined
+                        }
+                        alt={employee.photoUrl}
+                        className="object-cover"
+                      />
+                      <AvatarFallback>{employee.name.charAt(0)}</AvatarFallback>
+                    </Avatar>
                     <div className="flex flex-col">
                       <span className="font-semibold">{employee.name}</span>
                       <span className="text-sm text-gray-500">{employee.positionTitle}</span>

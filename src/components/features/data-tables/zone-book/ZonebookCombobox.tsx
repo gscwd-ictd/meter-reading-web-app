@@ -40,7 +40,7 @@ export const ZonebookCombobox: FunctionComponent = () => {
             : "Search zonebook"}
         </Button>
       </PopoverTrigger>
-      <PopoverContent className="w-[400px]">
+      <PopoverContent className="w-[400px]" onWheel={(e) => e.stopPropagation()}>
         <Command>
           <CommandInput placeholder="Search for a zonebook..." />
           <CommandList>

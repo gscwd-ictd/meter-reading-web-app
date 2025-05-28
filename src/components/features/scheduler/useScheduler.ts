@@ -381,7 +381,7 @@ export const useScheduler = (holidays: Holiday[], restDays: Date[], date?: Date)
       toast.success("Success", {
         description: "Successfully splitted the dates!",
         position: "top-right",
-        duration: 3000,
+        duration: 1500,
       });
       return split;
     },

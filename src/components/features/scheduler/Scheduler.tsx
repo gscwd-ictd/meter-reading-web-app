@@ -18,6 +18,7 @@ import {
 import { Button } from "@mr/components/ui/Button";
 import {
   CalendarPlus,
+  CheckCircle2,
   ChevronLeft,
   ChevronRight,
   EllipsisIcon,
@@ -210,6 +211,9 @@ export default function Scheduler() {
               const isWithinMonth = isSameMonth(entry.readingDate, startOfMonth(scheduler.currentDate));
               const dateIsSunday = isSunday(entry.readingDate);
               const dateIsSaturday = isSaturday(entry.readingDate);
+              const hasSchedule = entry.meterReaders?.find(
+                (mr) => Array.isArray(mr.zonebooks) && mr.zonebooks.length > 0
+              );
 
               return (
                 <ContextMenu key={idx}>
@@ -242,6 +246,15 @@ export default function Scheduler() {
                               }))
                               .sort((a, b) => (a.name > b.name ? 1 : -1))}
                           />
+                        )}
+                      </div>
+
+                      <div className="absolute top-0 right-1">
+                        {hasSchedule && (
+                          <div className="flex justify-center items-center">
+                            <CheckCircle2 className="fill-green-500 text-white" />
+                            {/* <span className="text-sm text-green-600">Assigned</span> */}
+                          </div>
                         )}
                       </div>
 
@@ -329,14 +342,14 @@ export default function Scheduler() {
                           toast.error("Error", {
                             description: "Cannot split dates on the beginning of the month!",
                             position: "top-right",
-                            duration: 2000,
+                            duration: 1500,
                           });
                         } else {
                           toast.error("Error", {
                             description:
                               "Cannot split entry, multiple same-day reading dates are not allowed!",
                             position: "top-right",
-                            duration: 2000,
+                            duration: 1500,
                           });
                         }
                       }}
