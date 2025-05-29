@@ -39,6 +39,18 @@ export const usePersonnelColumns = (data: PersonnelColumn[] | undefined) => {
         },
       },
       {
+        accessorKey: "zonebooks",
+        header: ({ column }) => <DataTableColumnHeader column={column} title="Zonebooks" />,
+        cell: ({ row }) =>
+          row.original.zonebooks.map((zonebook, idx) => (
+            <span key={zonebook.zonebook} className="truncate w-full">
+              {zonebook.zonebook}
+              {idx < row.original.zonebooks.length - 1 && ", "}
+            </span>
+          )),
+        enableColumnFilter: false,
+      },
+      {
         accessorKey: "restDay",
         header: ({ column }) => <DataTableColumnHeader column={column} title="Rest Day" />,
         cell: ({ row }) => (

@@ -20,17 +20,13 @@ export const SelectRestDayCombobox: FunctionComponent = () => {
   const selectedRestDay = usePersonnelStore((state) => state.selectedRestDay);
 
   return (
-    <div className=" w-full items-center gap-1">
+    <div className=" w-full items-center">
       <Label id="select-rest-day" className="text-sm font-medium text-gray-700">
         Rest Day
       </Label>
       <Popover open={open} onOpenChange={setOpen}>
         <PopoverTrigger asChild>
-          <Button
-            role="combobox"
-            variant="secondary"
-            className="w-full justify-between bg-green-500 text-white hover:bg-green-600 hover:brightness-95"
-          >
+          <Button role="combobox" variant="outline" className="w-full justify-between ">
             {selectedRestDay ? (
               <div className="flex justify-between items-center gap-2">
                 {restDays.find((restDay) => restDay.value === selectedRestDay)?.label}
@@ -42,7 +38,7 @@ export const SelectRestDayCombobox: FunctionComponent = () => {
             <ChevronsUpDownIcon />
           </Button>
         </PopoverTrigger>
-        <PopoverContent>
+        <PopoverContent align="start">
           <Command>
             <CommandList>
               {restDays.map((restDay) => (

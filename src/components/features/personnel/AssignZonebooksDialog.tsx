@@ -4,11 +4,11 @@ import { Dialog, DialogContent, DialogHeader } from "@mr/components/ui/Dialog";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@mr/components/ui/Table";
 import { DialogTitle } from "@radix-ui/react-dialog";
 import { FunctionComponent, useEffect, useState } from "react";
-import { ZonebookCombobox } from "./ZonebookCombobox";
 import { Zonebook } from "@mr/lib/types/zonebook";
 import { CircleXIcon } from "lucide-react";
+import { ZonebookCombobox } from "../data-tables/zone-book/ZonebookCombobox";
 
-export const ZonebookDialog: FunctionComponent = () => {
+export const AssignZonebooksDialog: FunctionComponent = () => {
   const zonebookDialogIsOpen = useSchedulesStore((state) => state.zonebookDialogIsOpen);
   const setZonebookDialogIsOpen = useSchedulesStore((state) => state.setZonebookDialogIsOpen);
   const selectedScheduleEntry = useSchedulesStore((state) => state.selectedScheduleEntry);
@@ -112,7 +112,7 @@ export const ZonebookDialog: FunctionComponent = () => {
                         });
                       }}
                     >
-                      <CircleXIcon className="size-6 sm:size-4 lg:size-6 fill-red-600 text-white" />
+                      <CircleXIcon className="fill-red-600 text-white" />
                     </button>
                   </TableCell>
                 </TableRow>

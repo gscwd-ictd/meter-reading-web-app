@@ -1,7 +1,7 @@
 export type Zonebook = {
   zonebook: string;
-  zone: number;
-  book: number;
+  zone: string;
+  book: string;
   area: string;
   // totalConsumers?: number;
   // active?: number;

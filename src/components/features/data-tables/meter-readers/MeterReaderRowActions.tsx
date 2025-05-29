@@ -4,7 +4,7 @@
 import { useSchedulesStore } from "@mr/components/stores/useSchedulesStore";
 import { Button } from "@mr/components/ui/Button";
 import { MeterReader } from "@mr/lib/types/personnel";
-import { User2Icon, XIcon } from "lucide-react";
+import { CircleXIcon, MapPinnedIcon } from "lucide-react";
 import { FunctionComponent } from "react";
 
 type PersonnelRowActionsProps = {
@@ -41,8 +41,8 @@ export const MeterReaderRowActions: FunctionComponent<PersonnelRowActionsProps> 
       <div className="flex grid-cols-2 gap-2">
         <div className="col-span-1">
           <Button className="w-full px-2" size="sm" onClick={() => assignZonebook(meterReader)}>
-            <User2Icon className="size-2 sm:size-2 lg:size-4" />
-            <span className="text-xs"> Assign</span>
+            <MapPinnedIcon className="size-2 sm:size-2 lg:size-4" />
+            <span className="text-xs"> Zonebooks</span>
           </Button>
         </div>
         <div className="col-span-1">
@@ -52,7 +52,8 @@ export const MeterReaderRowActions: FunctionComponent<PersonnelRowActionsProps> 
             size="sm"
             onClick={() => removeMeterReader(meterReader.companyId)}
           >
-            <XIcon className="size-2 sm:size-2 lg:size-4" /> <span className="text-xs">Remove</span>
+            <CircleXIcon className="size-2 sm:size-2 lg:size-4 fill-red-600 text-white" />
+            <span className="text-xs">Remove</span>
           </Button>
         </div>
         {/* <div className="col-span-1">

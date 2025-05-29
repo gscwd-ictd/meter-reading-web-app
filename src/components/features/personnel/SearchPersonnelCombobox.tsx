@@ -14,7 +14,7 @@ import { Popover, PopoverContent, PopoverTrigger } from "@mr/components/ui/Popov
 import { cn } from "@mr/lib/utils";
 import { MagnifyingGlassIcon } from "@radix-ui/react-icons";
 import { useQuery } from "@tanstack/react-query";
-import { Check, User2Icon } from "lucide-react";
+import { Check } from "lucide-react";
 import { FunctionComponent, useEffect, useState } from "react";
 import axios from "axios";
 import { Employee } from "@mr/lib/types/personnel";
@@ -30,7 +30,11 @@ export const SearchPersonnelCombobox: FunctionComponent = () => {
   const selectedEmployee = usePersonnelStore((state) => state.selectedEmployee);
   const setSelectedRestDay = usePersonnelStore((state) => state.setSelectedRestDay);
 
-  const { data: employees } = useQuery({
+  const {
+    data: employees,
+    isLoading,
+    isPending,
+  } = useQuery({
     queryKey: ["get-all-employees"],
     queryFn: async () => {
       const data = await axios.get(
@@ -52,11 +56,23 @@ export const SearchPersonnelCombobox: FunctionComponent = () => {
           variant="outline"
           role="combobox"
           aria-expanded={open}
-          className={`w-full justify-between h-[3rem] border border-gray-200`}
+          size="lg"
+          className={`flex justify-start w-full`}
         >
           {selectedEmployee && selectedEmployee !== undefined ? (
             <span className="flex gap-2 items-center text-sm">
-              <User2Icon className="size-6 text-primary" />
+              <Avatar className={`ring-background cursor-pointer ring-2`}>
+                <AvatarImage
+                  src={
+                    selectedEmployee?.photoUrl
+                      ? `${process.env.NEXT_PUBLIC_HRMS_IMAGES_SERVER}/${selectedEmployee.photoUrl}`
+                      : undefined
+                  }
+                  alt={selectedEmployee.photoUrl}
+                  className="object-cover"
+                />
+                <AvatarFallback>{selectedEmployee?.name?.charAt(0)}</AvatarFallback>
+              </Avatar>
               {
                 employees?.data.items?.find(
                   (employee: Employee) => employee.employeeId === selectedEmployee?.employeeId
@@ -72,58 +88,62 @@ export const SearchPersonnelCombobox: FunctionComponent = () => {
         </Button>
       </PopoverTrigger>
       <PopoverContent className="w-full" onWheel={(e) => e.stopPropagation()}>
-        <Command>
-          <CommandInput placeholder="Search employee..." />
-          <CommandList className="max-h-60 overflow-y-auto" role="listbox" tabIndex={-1}>
-            <CommandEmpty>No employee found.</CommandEmpty>
-            <CommandGroup>
-              {employees?.data.items.map((employee: Employee, index: number) => (
-                <CommandItem
-                  key={employee.companyId}
-                  value={employee.name}
-                  onSelect={(currentValue) => {
-                    if (employee.companyId === selectedEmployee?.companyId) {
-                      setSelectedEmployee(undefined);
-                    } else {
-                      setSelectedEmployee(employee);
-                    }
-                    setSelectedRestDay(undefined);
-                    setSearchEmployee(currentValue === searchEmployee ? "" : currentValue);
-                    setOpen(false);
-                  }}
-                  className={cn("px-2 py-2", index !== 0 && "border-t border-muted")}
-                >
-                  <div className="flex items-center gap-2">
-                    <Avatar className={`ring-background cursor-pointer ring-2`}>
-                      <AvatarImage
-                        src={
-                          employee.photoUrl
-                            ? `${process.env.NEXT_PUBLIC_HRMS_IMAGES_SERVER}/${employee.photoUrl}`
-                            : undefined
-                        }
-                        alt={employee.photoUrl}
-                        className="object-cover"
-                      />
-                      <AvatarFallback>{employee.name.charAt(0)}</AvatarFallback>
-                    </Avatar>
-                    <div className="flex flex-col">
-                      <span className="font-semibold">{employee.name}</span>
-                      <span className="text-sm text-gray-500">{employee.positionTitle}</span>
+        {!employees && (isLoading || isPending) ? (
+          <div className="text-gray-700 text-sm">Loading...</div>
+        ) : (
+          <Command>
+            <CommandInput placeholder="Search employee..." />
+            <CommandList className="max-h-60 overflow-y-auto" role="listbox" tabIndex={-1}>
+              <CommandEmpty>No employee found.</CommandEmpty>
+              <CommandGroup>
+                {employees?.data.items.map((employee: Employee, index: number) => (
+                  <CommandItem
+                    key={employee.companyId}
+                    value={employee.name}
+                    onSelect={(currentValue) => {
+                      if (employee.companyId === selectedEmployee?.companyId) {
+                        setSelectedEmployee(undefined);
+                      } else {
+                        setSelectedEmployee(employee);
+                      }
+                      setSelectedRestDay(undefined);
+                      setSearchEmployee(currentValue === searchEmployee ? "" : currentValue);
+                      setOpen(false);
+                    }}
+                    className={cn("px-2 py-2", index !== 0 && "border-t border-muted")}
+                  >
+                    <div className="flex items-center gap-2">
+                      <Avatar className={`ring-background cursor-pointer ring-2`}>
+                        <AvatarImage
+                          src={
+                            employee.photoUrl
+                              ? `${process.env.NEXT_PUBLIC_HRMS_IMAGES_SERVER}/${employee.photoUrl}`
+                              : undefined
+                          }
+                          alt={employee.photoUrl}
+                          className="object-cover"
+                        />
+                        <AvatarFallback>{employee.name.charAt(0)}</AvatarFallback>
+                      </Avatar>
+                      <div className="flex flex-col">
+                        <span className="font-semibold">{employee.name}</span>
+                        <span className="text-sm text-gray-500">{employee.positionTitle}</span>
+                      </div>
                     </div>
-                  </div>
-                  <Check
-                    className={cn(
-                      "ml-auto",
-                      searchEmployee.toLowerCase().includes(employee.name.toLowerCase())
-                        ? "opacity-100"
-                        : "opacity-0"
-                    )}
-                  />
-                </CommandItem>
-              ))}
-            </CommandGroup>
-          </CommandList>
-        </Command>
+                    <Check
+                      className={cn(
+                        "ml-auto",
+                        searchEmployee.toLowerCase().includes(employee.name.toLowerCase())
+                          ? "opacity-100"
+                          : "opacity-0"
+                      )}
+                    />
+                  </CommandItem>
+                ))}
+              </CommandGroup>
+            </CommandList>
+          </Command>
+        )}
       </PopoverContent>
     </Popover>
   );

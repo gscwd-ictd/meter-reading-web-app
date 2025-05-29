@@ -223,7 +223,7 @@ export default function Scheduler() {
                         setScheduleEntryDialogIsOpen(true);
                         setSelectedScheduleEntry(entry);
                       }}
-                      className="grid grid-rows-5 gap-0 hover:cursor-pointer relative group overflow-hidden border-t border-l p-0 text-sm [&:nth-child(-n+7)]:border-t-0 [&:nth-child(7n+1)]:border-l-0 h-full hover:brightness-90"
+                      className="grid grid-rows-5 transition-all ease-in-out duration-200 gap-0 hover:scale-[1.1] hover:border-none hover:z-[30] hover:cursor-pointer relative group overflow-hidden border-t border-l p-0 text-sm [&:nth-child(-n+7)]:border-t-0 [&:nth-child(7n+1)]:border-l-0 h-full hover:brightness-95"
                     >
                       {/* Date Number */}
                       <div
@@ -284,8 +284,8 @@ export default function Scheduler() {
                       {/* Disconnection Date */}
                       {Array.isArray(entry.disconnectionDate) ? (
                         <div className="flex justify-center items-center">
-                          <Badge className="rounded-none w-full bg-red-200 gap-0">
-                            <span className="text-red-600">
+                          <Badge className="rounded-none w-full bg-gray-100 gap-0">
+                            <span className="text-gray-600">
                               {entry.disconnectionDate.sort(compareAsc).map((day, idx) => (
                                 <span className="font-bold" key={idx}>
                                   {idx === 0 ? formatDate(day, "MMM dd") : "/" + formatDate(day, "dd")}
@@ -296,8 +296,8 @@ export default function Scheduler() {
                         </div>
                       ) : entry.disconnectionDate ? (
                         <div className="flex justify-center items-center">
-                          <Badge className="rounded-none bg-red-200 w-full gap-0">
-                            <span className="text-red-600 font-bold">
+                          <Badge className="rounded-none bg-gray-100 w-full gap-0">
+                            <span className="text-gray-600 font-bold">
                               {scheduler.formatDate(entry.disconnectionDate, "MMM dd")}
                             </span>
                           </Badge>
@@ -310,7 +310,7 @@ export default function Scheduler() {
                         entry.dueDate &&
                         entry.meterReaders?.length === 0 && (
                           <div className="flex justify-center items-center">
-                            <Badge className=" rounded-none font-medium bg-gray-200 gap-0 w-full text-[5px] sm:text-[5px] lg:text-xs tracking-wide text-gray-600">
+                            <Badge className=" rounded-none font-medium bg-gray-100 gap-0 w-full text-[5px] sm:text-[5px] lg:text-xs tracking-wide text-gray-600">
                               Applicable Rest Day
                             </Badge>
                           </div>
