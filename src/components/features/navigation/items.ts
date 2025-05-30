@@ -22,6 +22,15 @@ export type NavItem = {
   icon?: LucideIcon;
   isActive?: boolean;
   count?: number;
+  items?: NavSubItem[];
+};
+
+export type NavSubItem = {
+  title: string;
+  url: string;
+  icon?: LucideIcon;
+  isActive?: boolean;
+  count?: number;
 };
 
 export type NavItemTeam = {
@@ -59,13 +68,20 @@ export const mainNav: NavItem[] = [
   },
   {
     title: "Text Blast",
-    url: "/text-blast",
+    url: "#",
     icon: MessageCircleWarning,
-  },
-  {
-    title: "Text Blast Reports",
-    url: "/blast-reports",
-    icon: FileText,
+    items: [
+      {
+        title: "Send Message",
+        url: "/text-blast",
+        icon: MessageCircleWarning,
+      },
+      {
+        title: "Text Blast Reports",
+        url: "/blast-reports",
+        icon: FileText,
+      },
+    ],
   },
   {
     title: "Notifications",

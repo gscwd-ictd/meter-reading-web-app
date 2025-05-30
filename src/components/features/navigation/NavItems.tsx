@@ -10,8 +10,11 @@ import {
   SidebarMenuBadge,
   SidebarMenuButton,
   SidebarMenuItem,
+  SidebarMenuSub,
 } from "@mr/components/ui/Sidebar";
 import { usePathname, useRouter } from "next/navigation";
+import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@mr/components/ui/Collapsible";
+import { ChevronRight } from "lucide-react";
 
 type NavProps = {
   items: NavItem[];
@@ -28,21 +31,64 @@ export const NavMain: FunctionComponent<NavProps & ComponentPropsWithoutRef<type
     <SidebarGroup {...props}>
       <SidebarGroupLabel>Platform</SidebarGroupLabel>
       <SidebarMenu>
-        {items.map((item, index) => (
-          <SidebarMenuItem key={index}>
-            <SidebarMenuButton
-              tooltip={item.title}
-              isActive={pathname.startsWith(item.url)}
-              onClick={() => router.push(item.url)}
-            >
-              {item.icon && <item.icon />}
-              <span>{item.title}</span>
-              {item.count && (
-                <SidebarMenuBadge className="bg-destructive text-white">{item.count}</SidebarMenuBadge>
-              )}
-            </SidebarMenuButton>
-          </SidebarMenuItem>
-        ))}
+        {items.map((item, index) =>
+          item.items ? (
+            <Collapsible key={item.title} asChild defaultOpen={item.isActive} className="group/collapsible">
+              <SidebarMenuItem key={index}>
+                <CollapsibleTrigger asChild>
+                  <SidebarMenuButton
+                    tooltip={item.title}
+                    isActive={item.items?.some((subItem) => pathname.startsWith(subItem.url))}
+                  >
+                    {item.icon && <item.icon />}
+                    <span>{item.title}</span>
+                    {item.count && (
+                      <SidebarMenuBadge className="mr-6 bg-destructive text-white">
+                        {item.count}
+                      </SidebarMenuBadge>
+                    )}
+                    <ChevronRight className="ml-auto transition-transform duration-200 group-data-[state=open]/collapsible:rotate-90" />
+                  </SidebarMenuButton>
+                </CollapsibleTrigger>
+                <CollapsibleContent>
+                  <SidebarMenuSub>
+                    {item.items.map((subItem, index) => (
+                      <SidebarMenuItem key={index}>
+                        <SidebarMenuButton
+                          tooltip={subItem.title}
+                          isActive={pathname.startsWith(subItem.url)}
+                          onClick={() => router.push(subItem.url)}
+                        >
+                          {subItem.icon && <subItem.icon />}
+                          <span>{subItem.title}</span>
+                          {subItem.count && (
+                            <SidebarMenuBadge className="bg-destructive text-white">
+                              {subItem.count}
+                            </SidebarMenuBadge>
+                          )}
+                        </SidebarMenuButton>
+                      </SidebarMenuItem>
+                    ))}
+                  </SidebarMenuSub>
+                </CollapsibleContent>
+              </SidebarMenuItem>
+            </Collapsible>
+          ) : (
+            <SidebarMenuItem key={index}>
+              <SidebarMenuButton
+                tooltip={item.title}
+                isActive={pathname.startsWith(item.url)}
+                onClick={() => router.push(item.url)}
+              >
+                {item.icon && <item.icon />}
+                <span>{item.title}</span>
+                {item.count && (
+                  <SidebarMenuBadge className="bg-destructive text-white">{item.count}</SidebarMenuBadge>
+                )}
+              </SidebarMenuButton>
+            </SidebarMenuItem>
+          )
+        )}
       </SidebarMenu>
     </SidebarGroup>
   );
